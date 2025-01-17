@@ -1,0 +1,85 @@
+# Project Implementation List
+### Registration
+- [x] Adding Services
+- [x] Handling Abstract Types
+- Service Registration
+	- [ ] Sharing abstractions with concrete registrations
+	- [ ] Automatic concrete type identification
+	- [ ] Defining Decorators
+	- [ ] Defining Composites
+	- Other design patterns shouldn't need special cases
+- Reflection Based Registration
+	- [ ] 
+### Resolution
+- [x] Automatic Constructor Selection
+- [ ] Manual Constructor Selection
+	- User specified Constructor selection
+- [ ] Service Lifetimes
+	- [ ] Singleton (declared on the root scope and available to all children)
+	- [ ] Transient (always make a new one)
+	- [ ] Lifetime
+		- Singleton which is visible only to the current lifetime and lasts for the entire lifetime
+	- [ ] Nested Lifetime
+		- Singleton which exists only
+- Open Generic Types
+	- [ ] Register open generics
+	- [ ] Resolve open generics to closed generic types
+		- [ ] Set default closed type to open generic
+	- [ ] Allow overriding more specific type registrations
+- [ ] Wrapper Types
+	- [ ] Lazy resolution
+	- Collection Types
+		- [ ] Readonly Collections
+		- [ ] Enumerables
+		- [ ] List types
+		- [ ] Sets
+		- [ ] IEnumerable implementation types
+		- [ ] Array Types
+		- [ ] Lazy Collections
+	- [ ] Nullables
+	- Tuples
+		- [ ] ValueTuple
+		- [ ] Tuple
+	- [ ] Custom supplied
+- [ ] Constructor Injection
+- [ ] Property Injection
+- [ ] Function Injection
+- [ ] Adding parameter values (such as strings, numbers, etc)
+- [ ] Conditional Service Registration
+- Isolated Resolution contexts
+	- Allowing different service registrations to have more specific dependencies set for themselves
+	- [ ] Per Concrete/Abstract overriding dependencies
+	- [ ] Per concrete registration value dependencies
+- Conditionals
+	- [ ] Conditional Factory selection
+	- [ ] Condiitonal Instance selection
+	- [ ] Conditional Parameters
+- [ ] Constraining Generic types
+- Auto Mapping types to non inherited interfaces
+
+### Instancing
+- [x] Instancing Types
+- [ ] Ownership Semantics
+	- [ ] Support for WeakReferences
+	- [ ] External/Internal instance lifetime management
+	- [ ] Defining Service ownership relationships
+	- [ ] Defining number of consumers per dependency
+- [ ] Instance caching
+- [ ] Instance Pooling/Precreation
+
+### All
+- [ ] Reflection caching
+- Resolution Generation and Caching
+	- [ ] Function curry generation
+	- [ ] Function application generations
+	- [ ] Generating expressions fully resolving service types
+- Asynchronous Support
+	- [ ] Lockfree wherever possible
+- [ ] Error Status codes
+	- [ ] Functions which return raw value
+	- [ ] Functions which throw exceptions
+	- [ ] Functions which return null
+- [ ] Dynamic Addition/Removal
+	- [ ] Overlaying registrations on nested scopes
+
+- [ ] Configuring service building factory
