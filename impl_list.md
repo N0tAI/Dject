@@ -58,7 +58,7 @@
 - Auto Mapping types to non inherited interfaces
 
 ### Instancing
-- [x] Instancing Types
+- [ ] Instancing Types
 - [ ] Ownership Semantics
 	- [ ] Support for WeakReferences
 	- [ ] External/Internal instance lifetime management

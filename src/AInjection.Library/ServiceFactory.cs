@@ -5,38 +5,43 @@ namespace AInjection
 {
 	public class ServiceFactory : IServiceProvider
 	{
-		private readonly Dictionary<Type, Type> _serviceMapping = new();
+		private readonly Dictionary<Type, ComponentRegistration> _componentRegistry = new();
+		private readonly Dictionary<Type, Component> _serviceMapping = new();
 
-		public void Register<TAbstraction, TInstance>()
-			where TInstance : TAbstraction
-			=> RegisterService(typeof(TAbstraction), typeof(TInstance));
-		public void Register(Type abstraction, Type instance)
+		public void Register(Type instanceType, Action<ComponentRegistrationBuilder>? configure = null)
 		{
-			if (instance != abstraction && !instance.IsAssignableTo(abstraction))
-				throw new ArgumentException($"Type {instance.FullName} is not assignable to {abstraction.FullName}");
-			RegisterService(abstraction, instance);
+			ComponentRegistrationBuilder builder = new(instanceType);
+			if(configure is null)
+				builder.Provides(instanceType);
+			else
+				configure(builder);
+			ComponentRegistration registration = builder.Build();
+			_componentRegistry.Add(instanceType, registration);
+			var serviceComponent = new Component(registration.InstanceType);
+			foreach(var service in registration.AbstractionTypes)
+			{
+				if(_serviceMapping.ContainsKey(service))
+					_serviceMapping.Remove(service);
+				_serviceMapping.Add(service, serviceComponent);
+			}	
 		}
-		private void RegisterService(Type abstractionType, Type implType)
-		{
-			if(_serviceMapping.ContainsKey(abstractionType))
-				_serviceMapping.Remove(abstractionType);
-			_serviceMapping.Add(abstractionType, implType);
-		}
-		public bool TryRegister(Type abstractionType, Type implType)
-		{
-			return _serviceMapping.TryAdd(abstractionType, implType);
-		}
-		public bool Contains(Type abstractionType)
+		public void Register<T>(Action<ComponentRegistrationBuilder>? configure = null)
+			=> Register(typeof(T), configure);
+
+		public bool IsProvided(Type abstractionType)
 		{
 			return _serviceMapping.ContainsKey(abstractionType);
 		}
+		public bool IsProvided<T>()
+			=> IsProvided(typeof(T));
 
 		public object? GetService(Type serviceType)
 		{
-			if(_serviceMapping.TryGetValue(serviceType, out var implType))
+			if(_serviceMapping.TryGetValue(serviceType, out var component))
 			{
 				List<ConstructorInfo> validConstructors = new();
-				var ctors = implType.GetConstructors();
+				var implementingType = component.InstanceType;
+				var ctors = implementingType.GetConstructors();
 
 				// Find best matching ctor (ctor with the most parameters that matches those in the mapping)
 				foreach (var ctor in ctors)
@@ -52,7 +57,7 @@ namespace AInjection
 							break;
 						}
 						// Parameter cannot be the type being instantiated as would be a cyclical dependency (bad practice + stack overflow)
-						if(param.ParameterType == serviceType || param.ParameterType == implType)
+						if(param.ParameterType == serviceType || param.ParameterType == implementingType)
 						{
 							hasAllParameters = false;
 							break;
@@ -63,7 +68,7 @@ namespace AInjection
 				}
 
 				if (validConstructors.Count == 0)
-					throw new MissingMethodException($"Service instance ${implType.FullName} does not have parameterless constructor or constructor that can be fulfilled");
+					throw new MissingMethodException($"Service instance ${implementingType.FullName} does not have parameterless constructor or constructor that can be fulfilled");
 
 				validConstructors.OrderByDescending(ctor => ctor.GetParameters().Count());
 				var ctorToUse = validConstructors[0];
