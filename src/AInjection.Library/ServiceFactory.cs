@@ -1,8 +1,9 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel;
+using System.Reflection;
 
 namespace AInjection
 {
-	public class IoCContainer : IServiceProvider
+	public class ServiceFactory : IServiceProvider
 	{
 		private readonly Dictionary<Type, Type> _serviceMapping = new();
 
@@ -44,7 +45,14 @@ namespace AInjection
 					bool hasAllParameters = true;
 					foreach(var param in parameters)
 					{
+						// Parameter is not registered in the DI container thus cannot be handled
 						if (!_serviceMapping.ContainsKey(param.ParameterType))
+						{
+							hasAllParameters = false;
+							break;
+						}
+						// Parameter cannot be the type being instantiated as would be a cyclical dependency (bad practice + stack overflow)
+						if(param.ParameterType == serviceType || param.ParameterType == implType)
 						{
 							hasAllParameters = false;
 							break;

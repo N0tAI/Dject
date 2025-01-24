@@ -1,9 +1,4 @@
 ﻿using AInjection.XUnitTests.StubTypes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AInjection.XUnitTests
 {
@@ -12,7 +7,7 @@ namespace AInjection.XUnitTests
 		[Fact]
 		public void Container_InstantiateEmptyService()
 		{
-			IoCContainer container = new();
+			ServiceFactory container = new();
 			container.Register(typeof(EmptyStub), typeof(EmptyStub));
 
 			Assert.True(container.Contains(typeof(EmptyStub)));
@@ -22,7 +17,7 @@ namespace AInjection.XUnitTests
 		[Fact]
 		public void Container_InstantiateConcreteServiceAbstract()
 		{
-			IoCContainer container = new();
+			ServiceFactory container = new();
 			container.Register(typeof(IEmptyStub), typeof(EmptyStub));
 
 			var instance = container.GetService(typeof(IEmptyStub));
@@ -33,7 +28,7 @@ namespace AInjection.XUnitTests
 		[Fact]
 		public void Container_InstantiateConcreteService()
 		{
-			IoCContainer container = new();
+			ServiceFactory container = new();
 			container.Register(typeof(IEmptyStub), typeof(EmptyStub));
 			container.Register(typeof(EmptyStub), typeof(EmptyStub));
 
@@ -47,7 +42,7 @@ namespace AInjection.XUnitTests
 		[Fact]
 		public void Container_InstantiateWrongDependantService()
 		{
-			IoCContainer container = new();
+			ServiceFactory container = new();
 			container.Register(typeof(IDependantStub), typeof(DependantStub));
 			Assert.Throws<MissingMethodException>(() => container.GetService(typeof(IDependantStub)));
 		}
@@ -55,11 +50,18 @@ namespace AInjection.XUnitTests
 		[Fact]
 		public void Container_InstantiateDependantService()
 		{
-			IoCContainer container = new();
+			ServiceFactory container = new();
 			container.Register(typeof(IDependantStub), typeof(DependantStub));
 			container.Register(typeof(IEmptyStub), typeof(EmptyStub));
 
 			Assert.NotNull(container.GetService(typeof(IDependantStub)));
+		}
+
+		[Fact]
+		public void Container_ThrowOnCyclicalDependency()
+		{
+			ServiceFactory container = new();
+			container.Register<CyclicalDependencyStub>
 		}
 	}
 }

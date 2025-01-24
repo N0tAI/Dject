@@ -7,12 +7,12 @@ namespace AInjection.XUnitTests
 		[Fact]
 		public void Container_OverwriteServiceRegistration()
 		{
-			IoCContainer container = new();
+			ServiceFactory container = new();
 		}
 		[Fact]
 		public void Container_MultiServiceRegistration()
 		{
-			IoCContainer container = new();
+			ServiceFactory container = new();
 			container.Register(typeof(IEmptyStub), typeof(EmptyStub));
 			container.Register(typeof(EmptyStub), typeof(EmptyStub));
 			container.Register(typeof(IDependantStub), typeof(DependantStub));
@@ -25,7 +25,7 @@ namespace AInjection.XUnitTests
 		[Fact]
 		public void Container_AbstractSingleServiceRegistration()
 		{
-			IoCContainer container = new();
+			ServiceFactory container = new();
 			container.Register(typeof(IEmptyStub), typeof(EmptyStub));
 
 			Assert.True(container.Contains(typeof(IEmptyStub)));
@@ -34,7 +34,7 @@ namespace AInjection.XUnitTests
 		[Fact]
 		public void Container_SingleServiceRegistration()
 		{
-			IoCContainer container = new();
+			ServiceFactory container = new();
 			container.Register(typeof(EmptyStub), typeof(EmptyStub));
 
 			Assert.True(container.Contains(typeof(EmptyStub)));
@@ -42,7 +42,7 @@ namespace AInjection.XUnitTests
 		[Fact]
 		public void Container_RegisterUnrelatedServices()
 		{
-			IoCContainer container = new();
+			ServiceFactory container = new();
 			Assert.Throws<ArgumentException>(() => container.Register(typeof(IEmptyStub), typeof(OrphanStub)));
 			Assert.False(container.Contains(typeof(IEmptyStub)));
 		}
