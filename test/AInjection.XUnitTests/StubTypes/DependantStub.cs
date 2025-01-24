@@ -8,5 +8,6 @@ namespace AInjection.XUnitTests.StubTypes
 {
 	internal class DependantStub(IEmptyStub stub)
 	{
+		internal IEmptyStub Stub { get; } = stub;
 	}
 }
