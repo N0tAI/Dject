@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AInjection.XUnitTests.StubTypes
 {
-	internal interface IDependantStub : IStub
+	internal interface IStub
 	{
 	}
 }

@@ -4,64 +4,74 @@ namespace AInjection.XUnitTests
 {
 	public class ServiceInstantiationTests
 	{
-		[Fact]
-		public void Container_InstantiateEmptyService()
+		/// <summary>
+		/// Can instantiate a service with no dependencies
+		/// </summary>
+		/// <remarks>Checks against both abstract and concrete classes</remarks>
+		[Fact(DisplayName = "Create service with no dependencies")]
+		public void InstantiateNoDependencies()
 		{
-			ServiceFactory container = new();
-			container.Register(typeof(EmptyStub), typeof(EmptyStub));
+			ServiceFactory factory = new();
+			factory.Register<EmptyStub>(b =>
+			{
+				b.Provides<EmptyStub>()
+				 .Provides<IEmptyStub>();
+			});
 
-			Assert.True(container.Contains(typeof(EmptyStub)));
-			Assert.NotNull(container.GetService(typeof(EmptyStub)));
-		}
-
-		[Fact]
-		public void Container_InstantiateConcreteServiceAbstract()
-		{
-			ServiceFactory container = new();
-			container.Register(typeof(IEmptyStub), typeof(EmptyStub));
-
-			var instance = container.GetService(typeof(IEmptyStub));
-			Assert.NotNull(instance);
-			Assert.True(instance.GetType() == typeof(EmptyStub));
-		}
-
-		[Fact]
-		public void Container_InstantiateConcreteService()
-		{
-			ServiceFactory container = new();
-			container.Register(typeof(IEmptyStub), typeof(EmptyStub));
-			container.Register(typeof(EmptyStub), typeof(EmptyStub));
-
-			var maskedInstance = container.GetService(typeof(IEmptyStub));
+			var maskedInstance = factory.GetService(typeof(IEmptyStub));
 			Assert.NotNull(maskedInstance);
 
-			var concreteInstance = container.GetService(typeof(EmptyStub));
+			var concreteInstance = factory.GetService(typeof(EmptyStub));
 			Assert.NotNull(concreteInstance);
 		}
 
-		[Fact]
-		public void Container_InstantiateWrongDependantService()
+		/// <summary>
+		/// Ensure that a concrete type cannot be directly resolved if not specified as provided
+		/// </summary>
+		[Fact(DisplayName = "Instantiation respects registered services")]
+		public void RefuseToInstantiateUnprovidedServices()
 		{
-			ServiceFactory container = new();
-			container.Register(typeof(IDependantStub), typeof(DependantStub));
-			Assert.Throws<MissingMethodException>(() => container.GetService(typeof(IDependantStub)));
+			ServiceFactory factory = new();
+			factory.Register<EmptyStub>(b => b.Provides<IEmptyStub>());
+
+			Assert.True(factory.IsProvided<IEmptyStub>());
+			var maskedInstance = factory.GetService(typeof(IEmptyStub));
+			Assert.NotNull(maskedInstance);
+
+			Assert.False(factory.IsProvided<EmptyStub>());
+			var concreteInstance = factory.GetService(typeof(EmptyStub));
+			Assert.Null(concreteInstance);
 		}
 
-		[Fact]
-		public void Container_InstantiateDependantService()
+		/// <summary>
+		/// Ensure that a <see cref="MissingMethodException"/> is thrown if missing dependencies
+		/// </summary>
+		[Fact(DisplayName = "Throw on creating service with missing dependencies")]
+		public void ThrowOnMissingDependencies()
 		{
-			ServiceFactory container = new();
-			container.Register(typeof(IDependantStub), typeof(DependantStub));
-			container.Register(typeof(IEmptyStub), typeof(EmptyStub));
-
-			Assert.NotNull(container.GetService(typeof(IDependantStub)));
+			ServiceFactory factory = new();
+			factory.Register<DependantStub>(b => b.Provides<IDependantStub>());
+			Assert.Throws<MissingMethodException>(() => factory.GetService(typeof(IDependantStub)));
 		}
 
-		[Fact]
-		public void Container_ThrowOnCyclicalDependency()
+		/// <summary>
+		/// Ensure that a service with the required dependencies can be created
+		/// </summary>
+		[Fact(DisplayName = "Create service with correct dependencies")]
+		public void InstantiateWithAllDependencies()
 		{
-			ServiceFactory container = new();
-			container.Register<CyclicalDependencyStub>
+			ServiceFactory factory = new();
+			factory.Register<DependantStub>(b => b.Provides<IDependantStub>());
+			factory.Register<EmptyStub>(b => b.Provides<IEmptyStub>());
+
+			Assert.NotNull(factory.GetService(typeof(IDependantStub)));
+		}
+
+		[Fact(DisplayName = "Throw on circular dependency")]
+		public void ThrowOnServiceCyclicalDependency()
+		{
+			ServiceFactory factory = new();
+			factory.Register<CyclicalDependencyStub>();
 		}
 	}
 }
