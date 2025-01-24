@@ -6,11 +6,19 @@ namespace AInjection
 	{
 		private readonly Dictionary<Type, Type> _serviceMapping = new();
 
-		public void Register(Type abstractionType, Type implType)
+		public void Register<TAbstraction, TInstance>()
+			where TInstance : TAbstraction
+			=> RegisterService(typeof(TAbstraction), typeof(TInstance));
+		public void Register(Type abstraction, Type instance)
+		{
+			if (instance != abstraction && !instance.IsAssignableTo(abstraction))
+				throw new ArgumentException($"Type {instance.FullName} is not assignable to {abstraction.FullName}");
+			RegisterService(abstraction, instance);
+		}
+		private void RegisterService(Type abstractionType, Type implType)
 		{
 			if(_serviceMapping.ContainsKey(abstractionType))
 				_serviceMapping.Remove(abstractionType);
-
 			_serviceMapping.Add(abstractionType, implType);
 		}
 		public bool TryRegister(Type abstractionType, Type implType)

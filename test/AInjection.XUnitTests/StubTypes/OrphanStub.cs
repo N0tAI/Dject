@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace AInjection.XUnitTests.StubTypes
 {
-	internal class DependantStub(IEmptyStub stub) : IDependantStub
+	internal class OrphanStub
 	{
-		internal IEmptyStub Stub { get; } = stub;
 	}
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AInjection.XUnitTests.Registration
+namespace AInjection.XUnitTests
 {
 	public class ServiceInstantiationTests
 	{

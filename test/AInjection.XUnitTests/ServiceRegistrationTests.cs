@@ -1,6 +1,6 @@
 using AInjection.XUnitTests.StubTypes;
 
-namespace AInjection.XUnitTests.Registration
+namespace AInjection.XUnitTests
 {
 	public class ServiceRegistrationTests
 	{
@@ -38,6 +38,13 @@ namespace AInjection.XUnitTests.Registration
 			container.Register(typeof(EmptyStub), typeof(EmptyStub));
 
 			Assert.True(container.Contains(typeof(EmptyStub)));
+		}
+		[Fact]
+		public void Container_RegisterUnrelatedServices()
+		{
+			IoCContainer container = new();
+			Assert.Throws<ArgumentException>(() => container.Register(typeof(IEmptyStub), typeof(OrphanStub)));
+			Assert.False(container.Contains(typeof(IEmptyStub)));
 		}
 	}
 }
