@@ -12,6 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Planning", "Planning", "{37368CBA-47F4-4435-B57B-1A663EB31224}"
 	ProjectSection(SolutionItems) = preProject
 		impl_list.md = impl_list.md
+		.gitignore = .gitignore
+		license.md = license.md
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global
