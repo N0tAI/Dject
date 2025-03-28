@@ -3,7 +3,7 @@
 - [x] Adding Services
 - [x] Handling Abstract Types
 - Service Registration
-	- [ ] Sharing abstractions with concrete registrations
+	- [x] Sharing abstractions with concrete registrations
 	- [ ] Automatic concrete type identification
 	- [ ] Defining Decorators
 	- [ ] Defining Composites
@@ -41,7 +41,7 @@
 		- [ ] ValueTuple
 		- [ ] Tuple
 	- [ ] Custom supplied
-- [ ] Constructor Injection
+- [x] Constructor Injection
 - [ ] Property Injection
 - [ ] Function Injection
 - [ ] Adding parameter values (such as strings, numbers, etc)
@@ -52,7 +52,7 @@
 	- [ ] Per concrete registration value dependencies
 - Conditionals
 	- [ ] Conditional Factory selection
-	- [ ] Condiitonal Instance selection
+	- [ ] Conditional Instance selection
 	- [ ] Conditional Parameters
 - [ ] Constraining Generic types
 - Auto Mapping types to non inherited interfaces
@@ -64,21 +64,20 @@
 	- [ ] External/Internal instance lifetime management
 	- [ ] Defining Service ownership relationships
 	- [ ] Defining number of consumers per dependency
-- [ ] Instance caching
-- [ ] Instance Pooling/Precreation
+- [ ] Instance creation caching
+- [ ] Instance Pooling/Pre-Creation
 
 ### All
 - [ ] Reflection caching
 - Resolution Generation and Caching
 	- [ ] Function curry generation
-	- [ ] Function application generations
+	- [ ] Function application generator
 	- [ ] Generating expressions fully resolving service types
 - Asynchronous Support
 	- [ ] Lockfree wherever possible
 - [ ] Error Status codes
-	- [ ] Functions which return raw value
 	- [ ] Functions which throw exceptions
-	- [ ] Functions which return null
+	- [ ] Functions which return nullable
 - [ ] Dynamic Addition/Removal
 	- [ ] Overlaying registrations on nested scopes
 
