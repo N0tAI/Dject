@@ -71,7 +71,7 @@ namespace AInjection
 				}
 
 				if (validConstructors.Count == 0)
-					throw new MissingMethodException($"Service instance ${implementingType.FullName} does not have parameterless constructor or constructor that can be fulfilled");
+					throw new MissingMethodException($"Service instance {implementingType.FullName} does not have parameterless constructor or constructor that can be fulfilled");
 
 				var sortedConstructors = validConstructors.OrderByDescending(ctor => ctor.GetParameters().Count());
 				component.Initializer = sortedConstructors.First();
