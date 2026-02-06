@@ -9,7 +9,7 @@
 		/// <summary>
 		/// The type that is implementating the service(s) in <see cref="ServiceTypes"/>
 		/// </summary>
-		public Type InstanceType { get; set; } = instanceType;
+		public Type InstanceType { get; } = instanceType;
 		private List<Type>? _serviceTypes = null;
 		/// <summary>
 		/// All services this component implements
