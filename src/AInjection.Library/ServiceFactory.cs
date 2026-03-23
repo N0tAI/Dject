@@ -40,45 +40,11 @@ namespace AInjection
 			if (!_serviceMapping.TryGetValue(serviceType, out var component))
 				return null;
 			
-			List<ConstructorInfo> validConstructors = [];
-			if (component.Initializer == null)
-			{
-				var implementingType = component.InstanceType;
-				var constructors = implementingType.GetConstructors();
+			
+        var ctorArguments = component.Initializer.GetParameters().Select(param => GetService(param.ParameterType)!);
+        component.Initializer.Invoke(null, ctorArguments.ToArray())
 
-				// Find best matching ctor (ctor with the most parameters that matches those in the mapping)
-				foreach (var ctor in constructors)
-				{
-					var parameters = ctor.GetParameters();
-					var hasAllParameters = true;
-					foreach (var param in parameters)
-					{
-						// Parameter is not registered in the DI container thus cannot be handled
-						if (!_serviceMapping.ContainsKey(param.ParameterType))
-						{
-							hasAllParameters = false;
-							break;
-						}
-						// Parameter cannot be the type being instantiated as would be a cyclical dependency (bad practice + stack overflow by default)
-						if (param.ParameterType == serviceType || param.ParameterType == implementingType)
-						{
-							hasAllParameters = false;
-							break;
-						}
-					}
-					if (hasAllParameters)
-						validConstructors.Add(ctor);
-				}
-
-				if (validConstructors.Count == 0)
-					throw new MissingMethodException($"Service instance {implementingType.FullName} does not have parameterless constructor or constructor that can be fulfilled");
-
-				var sortedConstructors = validConstructors.OrderByDescending(ctor => ctor.GetParameters().Count());
-				component.Initializer = sortedConstructors.First();
-			}
-			var ctorArguments = component.Initializer.GetParameters().Select(param => GetService(param.ParameterType)!);
-
-			return component.Initializer.Invoke(null, ctorArguments.ToArray());
+			return ;
 		}
 	}
 }
