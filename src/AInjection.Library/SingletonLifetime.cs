@@ -1,4 +1,4 @@
-﻿namespace AInjection;
+﻿namespace Dject;
 
 public class SingletonLifetime(Type instanceType) : InstanceLifetime(instanceType)
 {

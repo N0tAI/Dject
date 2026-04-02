@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace AInjection;
+namespace Dject;
 
 public class TransientLifetime(Type instanceType) : InstanceLifetime(instanceType)
 {

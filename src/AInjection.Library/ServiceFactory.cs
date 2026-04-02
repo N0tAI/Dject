@@ -1,33 +1,18 @@
 ﻿using System.Reflection;
 
-namespace AInjection
+namespace Dject
 {
 	// TODO: Document!
 	public class ServiceFactory : IServiceProvider
 	{
-		private readonly Dictionary<Type, ComponentRegistration> _componentRegistry = new();
-		private readonly Dictionary<Type, Component> _serviceMapping = new();
+		private readonly Dictionary<Type, InstanceEntry> _componentRegistry = new();
+		private readonly Dictionary<Type, Type> _serviceMapping = new();
 
-		public void Register(Type instanceType, Action<ComponentRegistrationBuilder>? configure = null)
+		internal ServiceFactory(ServiceFactoryBuilder builder)
 		{
-			ComponentRegistrationBuilder builder = new(instanceType);
-			if(configure is null)
-				builder.Provides(instanceType);
-			else
-				configure(builder);
-			var registration = builder.Build();
-			_componentRegistry.Add(instanceType, registration);
-			var serviceComponent = new Component(registration.InstanceType);
-			foreach(var service in registration.AbstractionTypes)
-			{
-				// Remove if already exists
-                _serviceMapping.Remove(service);
-                _serviceMapping.Add(service, serviceComponent);
-			}
+			
 		}
-		public void Register<T>(Action<ComponentRegistrationBuilder>? configure = null)
-			=> Register(typeof(T), configure);
-
+		
 		public bool IsProvided(Type abstractionType)
 		{
 			return _serviceMapping.ContainsKey(abstractionType);
@@ -40,9 +25,8 @@ namespace AInjection
 			if (!_serviceMapping.TryGetValue(serviceType, out var component))
 				return null;
 			
-			
-        var ctorArguments = component.Initializer.GetParameters().Select(param => GetService(param.ParameterType)!);
-        component.Initializer.Invoke(null, ctorArguments.ToArray())
+			var ctorArguments = component.Initializer.GetParameters().Select(param => GetService(param.ParameterType)!);
+			component.Initializer.Invoke(null, ctorArguments.ToArray());
 
 			return ;
 		}

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace AInjection;
+namespace Dject;
 
 public abstract class InstanceLifetime
 {

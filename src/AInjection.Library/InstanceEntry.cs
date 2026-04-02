@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-namespace AInjection
+namespace Dject
 {
-	internal class Component(Type instanceType)
+	internal class InstanceEntry(Type instanceType)
 	{
 		internal Type InstanceType { get; } = instanceType;
 		internal InstanceProvider Provider { get; } = new(instanceType);
