@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AInjection.XUnitTests.StubTypes
+namespace Dject.XUnitTests.StubTypes
 {
-	internal interface IStub
+	internal interface IDependantStub : IStub
 	{
 	}
 }

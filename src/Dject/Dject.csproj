@@ -4,9 +4,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Dject</RootNamespace>
-    <AssemblyName>Dject.Library</AssemblyName>
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <LangVersion>14</LangVersion>
+    <PackageId>Dject</PackageId>
   </PropertyGroup>
 
 </Project>

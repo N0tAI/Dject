@@ -5,10 +5,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>Dject.Benchmarks</AssemblyName>
+    <RootNamespace>Dject.Benchmarks</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AInjection.Library\AInjection.Library.csproj" />
+    <ProjectReference Include="..\..\src\Dject\Dject.csproj" />
   </ItemGroup>
 
 </Project>

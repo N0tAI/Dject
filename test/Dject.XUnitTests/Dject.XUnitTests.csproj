@@ -7,6 +7,8 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <AssemblyName>Dject.XUnitTests</AssemblyName>
+    <RootNamespace>Dject.XUnitTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\AInjection.Library\AInjection.Library.csproj" />
+    <ProjectReference Include="..\..\src\Dject\Dject.csproj" />
   </ItemGroup>
 
   <ItemGroup>

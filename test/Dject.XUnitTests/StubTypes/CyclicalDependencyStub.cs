@@ -1,4 +1,4 @@
-﻿namespace AInjection.XUnitTests.StubTypes
+﻿namespace Dject.XUnitTests.StubTypes
 {
 	internal class CyclicalDependencyStub(CyclicalDependencyStub stub) : IDependantStub
 	{

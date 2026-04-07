@@ -1,6 +1,6 @@
-using AInjection.XUnitTests.StubTypes;
+using Dject.XUnitTests.StubTypes;
 
-namespace AInjection.XUnitTests
+namespace Dject.XUnitTests
 {
 	public class ComponentRegistrationTests
 	{

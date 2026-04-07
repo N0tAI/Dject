@@ -5,7 +5,7 @@ namespace Dject
 	// TODO: Document!
 	public class ServiceFactory : IServiceProvider
 	{
-		private readonly Dictionary<Type, InstanceEntry> _componentRegistry = new();
+		private readonly Dictionary<Type, InstanceEntry> _serviceStore = new();
 		private readonly Dictionary<Type, Type> _serviceMapping = new();
 
 		internal ServiceFactory(ServiceFactoryBuilder builder)
